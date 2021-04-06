@@ -9,8 +9,8 @@ function App() {
       <h1><img src={logo} className="App-logo" alt="logo" /> Google Pay React </h1>
       <hr />
       <GooglePayButton
-      paymentRequest={
-        {
+      environment='TEST'
+      paymentRequest={{
           apiVersion:2,
           apiVersionMinor:0,
           allowedPaymentMethods:[
@@ -24,7 +24,8 @@ function App() {
               tokenizationSpecification:{
                 type:'PAYMENT_GATEWAY',
                 parameters:{
-                  gateway:'stripe'
+                  gateway:'example',
+                  gatewayMerchantId:'ExampleAzharGateway',
                 },
               },
             },
@@ -36,19 +37,24 @@ function App() {
           transactionInfo:{
             totalPriceStatus:'FINAL',
             totalPriceLabel:'total',
-            totalPrice:'100.00',
+            totalPrice:'1.00',
             currencyCode:'USD',
             countryCode:'US',
           },
           shippingAddressRequired:true,
           callbackIntents:['PAYMENT_AUTHORIZATION'],
         }}
-      onLoadPaymentData={PaymentRequest=>{
-        console.log('successfull',PaymentRequest);
-      }}
-      onPaymentAuthorized={PaymentResponse=>{
-        console.log('payment response',PaymentResponse);
-      }}
+        onLoadPaymentData={paymentRequest=>{
+          console.log('success',paymentRequest);
+        }}
+        onPaymentAuthorized={paymentRequest=>{
+          console.log('pay req',paymentRequest);
+          return {transactionState:'SUCCESS'}
+        }}
+
+      existingPaymentMethodRequired='false'
+      buttonColor='black'
+      buttonType='buy'
       />
     </div>
     
